@@ -1,0 +1,26 @@
+# handoff config: one file, shared by every device through the store repo.
+# Anything left out uses the built-in default shown here.
+
+[store]
+# When to push the store repo after writing a handoff:
+#   auto   = only for remote handoffs (other device)
+#   always = also for local handoffs
+#   never  = never push (you push by hand)
+push = "auto"
+
+[defaults]
+mode        = "remote"               # remote (other device) | local (same device)
+wip         = "commit"               # remote mode, uncommitted work: commit (WIP commit on current branch) | refuse
+local_wip   = "keep"                 # local mode: keep (leave in shared tree) | commit | refuse
+wip_message = "wip(handoff): {slug}" # {slug} and {id} are available
+checkpoint  = "auto"                 # auto (remote: pr if the branch has an open PR, else push; local: none) | none | push | pr
+pr_draft    = true                   # checkpoint = pr: open new PRs as drafts
+pr_comment  = false                  # checkpoint = pr: comment on an existing PR with the handoff sha
+secret_scan = true                   # gitleaks if installed, regex fallback
+cold_check  = true                   # remote mode: fresh shallow clone of the store must see the handoff
+target      = "any"                  # default receiving agent: any | claude | codex | cursor | agy | opencode
+
+# Per-device overrides, keyed by hostname (`hostname -s`), e.g. set with
+# `handoff config set --device mode local`:
+# [devices.my-laptop.defaults]
+# mode = "local"
